@@ -23,30 +23,32 @@ function runAddress(numOfficials, queryURL) {
   $.ajax({url: queryURL,
    method: "GET"}).done(function(OfficialsData){
 
-for (var i = 0; i < OfficialsData.officials.length; i++) {
+    for (var i = 0; i < OfficialsData.officials.length; i++) {
 
-      var wellsection = $("<div>");
-    //then we give it a class
-    wellsection.addClass("well");
-    //and an individual attribute that is equal to the article-well plus 1
-    wellsection.attr("id", "official-well" + i);
-    //then we append the variable to the html section
-    $("#well-section").append(wellsection);
+        var wellsection = $("<div>");
 
-    //now we are going to attach the content to the appropriate well
-    $("#official-well" + i).append("<img src='" + OfficialsData.officials[i].photoUrl + "' alt='photo' width='100'>");
-    $("#official-well" + i).append("<h2>" + OfficialsData.officials[i].name + "</h2");
-    $("#official-well" + i).append("<h3>" + OfficialsData.officials[i].party + "</h3");
-    $("#official-well" + i).append("<h3> <a href='" + OfficialsData.officials[i].urls[0] + "' target='_blank'>" + OfficialsData.officials[i].urls[0] + "</a></h3");
+        wellsection.addClass("well");
+ 
+        wellsection.attr("id", "official-well" + i);
+
+
+
+      $("#well-section").append(wellsection);
+
+
+      $("#official-well" + i).append("<img src='" + OfficialsData.officials[i].photoUrl + "'width='100'>");
+      $("#official-well" + i).append("<h2>" + OfficialsData.officials[i].name + "</h2");
+      $("#official-well" + i).append("<h3>" + OfficialsData.officials[i].party + "</h3");
+      
+      if(OfficialsData.officials[i] && OfficialsData.officials[i].hasOwnProperty("urls")){
+      $("#official-well" + i).append("<h3> <a href='" + OfficialsData.officials[i].urls[0] + "' target='_blank'>" + OfficialsData.officials[i].urls[0] + "</a></h3");
+      }
 
 
     }
-  
+
   })
 }
-
-
-
 
 
 
