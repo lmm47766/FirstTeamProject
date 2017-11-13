@@ -2,8 +2,8 @@
 
 //********** Ajax call taking first and last name and returning the committe ID ***************//
 
-var firstName = "Donald";
-var LastName = "Trump";
+var firstName = "Judy";
+var LastName = "Chu";
 
 $.ajax({
 	// url: "https://api.open.fec.gov/v1/candidates/search/?name=Mike%20Pence&api_key=Hsx79iOvPRvyHG1tF6GVr91pbhX24N3hcGtkJMot&page=1&sort=name&per_page=20",
@@ -12,6 +12,8 @@ $.ajax({
 	method: "GET"
 
 }).done(function(data) {
+
+	
 	// console.log(data.results[0].principal_committees[0].committee_id);
 	var committeeId = data.results[0].principal_committees[0].committee_id;
 
@@ -22,7 +24,7 @@ $.ajax({
 		method: "GET"
 
 	}).done(function(data) {
-
+		// console.log(data);
 		var topContributors=[];
 		var contributersAmount=[];
 
@@ -55,38 +57,99 @@ $.ajax({
 
 
 
+//Function that takes integer and formats it in currency format
+function formatDollar(num) {
+    var p = num.toFixed(2).split(".");
+    return "$" + p[0].split("").reverse().reduce(function(acc, num, i, orig) {
+        return  num=="-" ? acc : num + (i && !(i % 3) ? "," : "") + acc;
+    }, "") + "." + p[1];
+}
 
-$.ajax({
-	url: "https://www.googleapis.com/civicinfo/v2/representatives?key=AIzaSyDOqnV6Rm24od0pgTeOHbHUuZKJcEN8Dfk&address=1657%20Rodeo%20rd%20arcadia%20ca",
-	method: "GET"
-
-}).done(function(data) {
-;
 
 
-	for (var i = 0; i < data.officials.length; i++) {
+$("#run-search").on("click", function(event){
 
-		var newDiv = $("<div>");
-		$(".test2").append(newDiv);
 
-		var name = data.officials[i].name + "<br>";
-		// console.log(data.officials[i].name + " " + i);
+	event.preventDefault();
+
+	street = $("#street").val();
+	
+	//replacing spaces with %20
+	newStreet = street.split(" ").join("+");
+	console.log(newStreet);
+
+	city = $("#city-name").val().trim();
+	newCity = city.split(" ").join("+");
+
+	state = $("#state").val().trim();
+	var apiKey = "AIzaSyDOqnV6Rm24od0pgTeOHbHUuZKJcEN8Dfk";
+	var queryURLbase = "https://www.googleapis.com/civicinfo/v2/representatives?key=" + apiKey;
+
+	var newURL = queryURLbase + "&address=" + newStreet + "%20" + newCity + "%20" + state;
+
+	// return false;
+
+
+	$.ajax({
+		
+		url: newURL,
+		method: "GET"
+
+	}).done(function(data) {
+	;
+
+		console.log(data);
+		for (var i = 0; i < data.officials.length; i++) {
+
+			var newLi = $("<li>");
+			$("#test").append(newLi);
+
+			var newDiv = $("<div>");
+			newDiv.addClass("collapsible-header blue-grey-text text-darken-2");
+			newLi.append(newDiv);
+
+			var icon = $("<i class='material-icons blue-grey-text text-darken-2'>");
+			newDiv.append("<i class='material-icons blue-grey-text text-darken-2'>" + "account_balance" + "</i>");
+
+			var name = data.officials[i].name;
+
+
+			var newDiv2 = $("<div>");
+			newDiv2.addClass("collapsible-body");
+			newLi.append(newDiv2);
+
+			var newImg = $("<img>")
+			newImg.addClass("circle left z-depth-1");
+			newImg.attr("src",data.officials[i].photoUrl);
+			newImg.css("height", "200px");
+			newImg.css("width","175px");
+			newDiv2.append(newImg);
+
+			var newDiv3 = $("<div>");
+			newDiv3.addClass("clearfix");
+			newDiv2.append(newDiv3);		
 
 
 			for (var j = 0; j < data.offices.length; j++) {
+
 				
 				if (  data.offices[j].officialIndices.indexOf(i) > -1   ) {
 
-					var role = data.offices[j].name + "<br>";
-					var party = data.officials[i].party + "<br>";
-
+					var role = data.offices[j].name;
+					var party = data.officials[i].party;
 
 				}
 
 			}
-		newDiv.append("<p>" +name + role + party + "</p>");
 
-	}
+			newDiv2.append(party);
+			newDiv.append(name + " - " + role);
+
+		}
+
+
+
+	});
 
 
 
@@ -101,14 +164,6 @@ $.ajax({
 
 
 
-
-//Function that takes integer and formats it in currency format
-function formatDollar(num) {
-    var p = num.toFixed(2).split(".");
-    return "$" + p[0].split("").reverse().reduce(function(acc, num, i, orig) {
-        return  num=="-" ? acc : num + (i && !(i % 3) ? "," : "") + acc;
-    }, "") + "." + p[1];
-}
 
 
 

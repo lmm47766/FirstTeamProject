@@ -1,3 +1,6 @@
+alert("asdfd");
+
+
 $(document).ready(function(){
 
 //variables 
@@ -18,7 +21,7 @@ var politicians = 0;
 
 //function to run Ajax call
 
-function runAddress(numOfficials, queryURL) {
+function runAddress(queryURL) {
 
   $.ajax({url: queryURL,
    method: "GET"}).done(function(OfficialsData){
@@ -68,7 +71,7 @@ $("#well-section").empty();
   var newURL = queryURLbase + "&address=" + streetNumber + "%20" + streetName + "%20" + stRdOrAve + "%20" + city + "%20" + state;
 
   // console.log(newURL);
-  runAddress(1, newURL);
+  runAddress(newURL);
 
   return false;
 })
