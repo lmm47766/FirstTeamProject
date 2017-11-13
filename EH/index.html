@@ -26,14 +26,22 @@
       <div class="row">
         <div class="col s1"></div><!--emptycolDIV-->
         <div class="input-field col s3">
-          <input value="" id="street" type="text" class="validate">
-          <label class="active" for="street">Street</label>
+          <input value="" id="street-number" type="text" class="validate">
+          <label class="active" for="street">Street Number</label>
+        </div><!--inputDIV-->
+        <div class="input-field col s3">
+          <input value="" id="street-name" type="text" class="validate">
+          <label class="active" for="city-name">Street Name</label>
+        </div><!--inputDIV-->
+
+        <div class="input-field col s3">
+          <input value="" id="street-type" type="text" class="validate">
+          <label class="active" for="street">Street Type</label>
         </div><!--inputDIV-->
         <div class="input-field col s3">
           <input value="" id="city-name" type="text" class="validate">
           <label class="active" for="city-name">City</label>
         </div><!--inputDIV-->
-
         <div class="input-field col s2">
           <input value="" id="state" type="text" class="validate">
           <label class="active" for="city-name">State</label>
@@ -179,37 +187,23 @@
         </ul>
       </div><!--placeholderrowDIV-->
 
+        <div class=“row” id=“placeholderDIV-LIST”>
+        <!-- <div> -->
+        <ul class=“collapsible” data-collapsible=“accordion” id=“test”>
 
-        <!-- This row will handle all of the retrieved articles -->
-        <div class="row">
-          <div class="col-sm-12">
-            <br>
-
-            <!-- This panel will initially be made up of a panel and wells for each of the articles retrieved -->
-            <div class="panel panel-primary">
-
-              <!-- Panel Heading for the retrieved articles box -->
-              <div class="panel-heading">
-                <h3 class="panel-title"><strong><i class="fa fa-table"></i>   Your Political Officers</strong></h3>
-              </div>
-
-              <!-- This main panel will hold each of the resulting articles -->
-              <div class="panel-body" id="well-section">
-              </div>
-            </div>
-          </div>
-        </div>
+       </ul>
+      </div>
   </div><!--DIV CONTAINER-->
 
    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
    <!-- Compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   <!-- Code to the JavaScript File -->
-  <script src="js/politicians.js"></script>
+  <script src="js/app.js"></script>
 <script>
 //$(document).ready(function(){
   // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-//  $('.modal').modal();
+//  $('.modal').modal();s
 //});
   //  var cityName = document.getElementById('#city-name');
 

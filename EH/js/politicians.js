@@ -1,6 +1,4 @@
 
-
-//variables
 var apiKey = "AIzaSyDOqnV6Rm24od0pgTeOHbHUuZKJcEN8Dfk";
     var streetName = "";
     var streetNumber = "";
