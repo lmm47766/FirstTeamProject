@@ -6,7 +6,9 @@ var firstName = "Donald";
 var LastName = "Trump";
 
 $.ajax({
-	url: "https://api.open.fec.gov/v1/candidates/search/?sort=name&api_key=Hsx79iOvPRvyHG1tF6GVr91pbhX24N3hcGtkJMot&page=1&per_page=20&name=" + firstName+ "%20"+ LastName,
+	// url: "https://api.open.fec.gov/v1/candidates/search/?name=Mike%20Pence&api_key=Hsx79iOvPRvyHG1tF6GVr91pbhX24N3hcGtkJMot&page=1&sort=name&per_page=20",
+	url: "https://api.open.fec.gov/v1/candidates/search/?sort=name&api_key=Hsx79iOvPRvyHG1tF6GVr91pbhX24N3hcGtkJMot&page=1&per_page=20&name=" 
+		+ firstName+ "%20"+ LastName,
 	method: "GET"
 
 }).done(function(data) {
@@ -78,9 +80,7 @@ $.ajax({
 					var role = data.offices[j].name + "<br>";
 					var party = data.officials[i].party + "<br>";
 
-					console.log( data.offices[j].name);
-					console.log(data.officials[i].party);
-					console.log( "  " );
+
 				}
 
 			}
