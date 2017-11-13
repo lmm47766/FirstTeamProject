@@ -9,9 +9,8 @@ $.ajax({
 	url: "https://api.open.fec.gov/v1/candidates/search/?sort=name&api_key=Hsx79iOvPRvyHG1tF6GVr91pbhX24N3hcGtkJMot&page=1&per_page=20&name=" + firstName+ "%20"+ LastName,
 	method: "GET"
 
-}).then(function(data) {
-;
-
+}).done(function(data) {
+	// console.log(data.results[0].principal_committees[0].committee_id);
 	var committeeId = data.results[0].principal_committees[0].committee_id;
 
 	//********** Ajax call taking the committe ID and returning the top 5 contributers ***************//
@@ -20,21 +19,86 @@ $.ajax({
 			 committeeId + "&sort=-contribution_receipt_amount&two_year_transaction_period=2016&per_page=100",
 		method: "GET"
 
-	}).then(function(data) {
+	}).done(function(data) {
 
+		var topContributors=[];
+		var contributersAmount=[];
 
+		// Deduping the list of contributers
+		for (var i = 0; i < data.results.length; i++) {
+
+			if(  topContributors.indexOf(data.results[i].contributor_name) === -1 ){
+				topContributors.push(data.results[i].contributor_name);
+				contributersAmount.push(data.results[i].contribution_receipt_amount);
+				}
+		}		
+
+		//Listing the top 5 contributers
 		for (var i = 0; i < 5; i++) {
 			var newDiv = $("<div>");
-			$(".info_here").append(newDiv)
-			var a = data.results[i].contributor_name + "<br>";
-			var b = formatDollar(data.results[i].contribution_receipt_amount) + "<br>";
-			newDiv.append("<p>" + a + b + "</p>");
+			$(".test").append(newDiv)
+			var a = topContributors[i] + "<br>";
+			var b = formatDollar(contributersAmount[i]) + "<br>";
+			newDiv.html("<p>" + a + b + "</p>");
 		}
+	
 
 	});
 
 
 });
+
+
+
+
+
+
+
+$.ajax({
+	url: "https://www.googleapis.com/civicinfo/v2/representatives?key=AIzaSyDOqnV6Rm24od0pgTeOHbHUuZKJcEN8Dfk&address=1657%20Rodeo%20rd%20arcadia%20ca",
+	method: "GET"
+
+}).done(function(data) {
+;
+
+
+	for (var i = 0; i < data.officials.length; i++) {
+
+		var newDiv = $("<div>");
+		$(".test2").append(newDiv);
+
+		var name = data.officials[i].name + "<br>";
+		// console.log(data.officials[i].name + " " + i);
+
+
+			for (var j = 0; j < data.offices.length; j++) {
+				
+				if (  data.offices[j].officialIndices.indexOf(i) > -1   ) {
+
+					var role = data.offices[j].name + "<br>";
+					var party = data.officials[i].party + "<br>";
+
+					console.log( data.offices[j].name);
+					console.log(data.officials[i].party);
+					console.log( "  " );
+				}
+
+			}
+		newDiv.append("<p>" +name + role + party + "</p>");
+
+	}
+
+
+
+});
+
+
+
+
+
+
+
+
 
 
 
@@ -47,10 +111,5 @@ function formatDollar(num) {
 }
 
 
-
-
-
-
-// https://www.googleapis.com/civicinfo/v2/representatives?key=AIzaSyDOqnV6Rm24od0pgTeOHbHUuZKJcEN8Dfk&address=1657%20Rodeo%20rd%20arcadia%20ca
 
 
