@@ -4,6 +4,14 @@
 
 var firstName = "Judy";
 var LastName = "Chu";
+$("#hide").hide();
+$("#hide2").hide();
+$("#hide3").hide();
+$("#hide4").hide();
+$("#hide5").hide();
+$("#hide6").hide();
+$("#hide7").hide();
+$("#hide8").hide();
 
 $.ajax({
 	// url: "https://www.followthemoney.org/metaselect/json/entity.php?t=Candidate&name=trump%2C%20donald&mode=json",
@@ -59,7 +67,25 @@ $.ajax({
 	}
 
 	$("#run-search").on("click", function(event){
+
 		event.preventDefault();
+
+		$("#hide").show();
+		$("#hide2").show();
+		$("#hide3").show();
+		$("#hide4").show();
+		$("#hide5").show();
+		$("#hide6").show();
+		$("#hide7").show();
+		$("#hide8").show();
+
+		$("#national-division-level").show();
+		$("#state-division-level").show();
+		$("#county-division-level").show();
+		$("#local-division-level").show();
+
+
+
 		street = $("#street").val();
 
 		//replacing spaces with %20
@@ -75,14 +101,15 @@ $.ajax({
 		var newURL = queryURLbase + "&address=" + newStreet + "%20" + newCity + "%20" + state;
 
 	$.ajax({
-		url: newURL,
+		url: "https://www.googleapis.com/civicinfo/v2/representatives?key=AIzaSyDOqnV6Rm24od0pgTeOHbHUuZKJcEN8Dfk&address=8680+1/2+olympic+blvd.%20Los+ANgeles%20ca",
 		method: "GET"
 	}).done(function(data) {
 
 		console.log(data);
+
 		// console.log(data.divisions["ocd-division/country:us"].name);
 		for (var i = 0; i < data.officials.length; i++) {
-
+			// console.log(data.officials[i].photoUrl);
 			var newLi = $("<li>");
 			$("#test").append(newLi);
 
@@ -101,14 +128,64 @@ $.ajax({
 
 			var newImg = $("<img>")
 			newImg.addClass("circle left z-depth-1");
-			newImg.attr("src",data.officials[i].photoUrl);
+				if (data.officials[i].photoUrl === undefined ){
+					newImg.attr("src", "assets/images/electedOfficials.png");
+				}
+				else {
+					newImg.attr("src",data.officials[i].photoUrl);
+				}
 			newImg.css("height", "200px");
 			newImg.css("width","175px");
 			newDiv2.append(newImg);
 
+			console.log(data.officials[i].address[0].line1);
+
 			var newDiv3 = $("<div>");
-			newDiv3.addClass("clearfix");
+			newDiv3.addClass("right");
+
+			if (data.officials[i].address[0].line2 === undefined ){
+				var addy =  $("<h5 class='right-align blue-grey-text text-darken-2'>");
+				addy.append("Address");
+				newDiv3.append(addy);
+				var line1 = $("<h6 class='right-align blue-grey-text text-darken-2'>");
+				line1.append(data.officials[i].address[0].line1);
+				newDiv3.append(line1);
+				var city = $("<p class='right-align blue-grey-text text-darken-2'>");
+				city.append(data.officials[i].address[0].city);
+				newDiv3.append(city);
+				var state = $("<p class='right-align blue-grey-text text-darken-2'>");
+				city.append(" " + data.officials[i].address[0].state);
+				newDiv3.append(state);
+				var zip = $("<p class='right-align blue-grey-text text-darken-2'>");
+				city.append(" " + data.officials[i].address[0].zip);
+				newDiv3.append(zip);
+			}
+
+			else {
+				var addy =  $("<h5 class='right-align blue-grey-text text-darken-2'>");
+				addy.append("Address");
+				newDiv3.append(addy);
+				var line1 = $("<h6 class='right-align blue-grey-text text-darken-2'>");
+				line1.append(data.officials[i].address[0].line1);
+				newDiv3.append(line1);
+				var line2 = $("<p class='right-align blue-grey-text text-darken-2'>");
+				line2.append(data.officials[i].address[0].line2);
+				newDiv3.append(line2);
+				var city = $("<p class='right-align blue-grey-text text-darken-2'>");
+				city.append(data.officials[i].address[0].city);
+				newDiv3.append(city);
+				var state = $("<p class='right-align blue-grey-text text-darken-2'>");
+				city.append(" " + data.officials[i].address[0].state);
+				newDiv3.append(state);
+				var zip = $("<p class='right-align blue-grey-text text-darken-2'>");
+				city.append(" " + data.officials[i].address[0].zip);
+				newDiv3.append(zip);
+			}
+
+			var newDiv4 = $("<div>");
+			newDiv4.addClass("clearfix")
 			newDiv2.append(newDiv3);
+			newDiv2.append(newDiv4);
 
 			for (var j = 0; j < data.offices.length; j++) {
 
@@ -132,7 +209,13 @@ $.ajax({
 				newDiv2.addClass("yellow lighten-4")
 			}
 
-			newDiv2.append(party);
+			if (data.officials[i].party === undefined) {
+
+			}
+			else {
+				newDiv4.append("Party: " + party);
+			}
+
 			newDiv.append(name + " - " + role);
 
 			if (newLi.attr("id").includes("place")) {
@@ -141,6 +224,7 @@ $.ajax({
 
 		  else if(newLi.attr("id").includes("county")) {
 				$("#test-county").append(newLi);
+				console.log(newLi);
 		  }
 
 			else if(newLi.attr("id").includes("state")) {
